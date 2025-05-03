@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/surahFragment">
+
+    <fragment
+        android:id="@+id/surahFragment"
+        android:name="com.sout_rahim.quran_za.SurahFragment"
+        android:label="@string/app_name"
+        tools:layout="@layout/fragment_surah" >
+        <action
+            android:id="@+id/action_surahFragment_to_surahContentFragment"
+            app:destination="@id/surahContentFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/surahContentFragment"
+        android:name="com.sout_rahim.quran_za.SurahContentFragment"
+        android:label="@string/surah_content_fragment_label"
+        tools:layout="@layout/fragment_surah_content" >
+        <argument
+            android:name="selected_surah"
+            app:argType="com.sout_rahim.quran_za.data.model.SurahItem" />
+    </fragment>
+    <fragment
+        android:id="@+id/bookmarkFragment"
+        android:name="com.sout_rahim.quran_za.BookmarkFragment"
+        android:label="@string/menu_bookmark"
+        tools:layout="@layout/fragment_bookmark" >
+        <action
+            android:id="@+id/action_bookmarkFragment_to_surahContentFragment"
+            app:destination="@id/surahContentFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/aboutFragment"
+        android:name="com.sout_rahim.quran_za.AboutFragment"
+        android:label="@string/menu_about"
+        tools:layout="@layout/fragment_about" />
+</navigation>
