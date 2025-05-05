@@ -31,17 +31,20 @@ class SplashActivity : AppCompatActivity() {
 
         settingViewModel.loadSettings()
 
-        // Synchronously get saved dark mode
-        val isDarkMode = settingViewModel.getDarkMode()
-        // Apply the theme once
-        AppCompatDelegate.setDefaultNightMode(
-            if (isDarkMode) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
-        )
+        // Observe dark mode changes
+        settingViewModel.isDarkMode.observe(this, Observer { isDarkMode ->
+            // Apply the theme based on the dark mode preference
+            AppCompatDelegate.setDefaultNightMode(
+                if (isDarkMode) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
+            )
+        })
+
         Handler(Looper.getMainLooper()).postDelayed({
             val intent = Intent(this, MainActivity::class.java)
             // Flags to clear all previous activities
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
             finish()  // Finish the SplashActivity
         }, 2000)  // 2000 milliseconds (2 seconds) delay
     }
