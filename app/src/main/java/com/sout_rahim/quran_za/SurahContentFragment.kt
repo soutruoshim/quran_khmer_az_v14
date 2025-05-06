@@ -180,25 +180,26 @@ class SurahContentFragment : Fragment() {
         quranViewModel.fetchSurahContent(surahId) // Start fetching
 
         viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                // Wait for content to be loaded
-                quranViewModel.surahContent.collect { ayahs ->
-                    setAyahNumToSpinner(ayahs)
+            // Wait for content to be loaded
+            quranViewModel.surahContent.collect { ayahs ->
+                setAyahNumToSpinner(ayahs)
 
-                    val modifiedAyahs = ayahs.toMutableList()
-                    if (ayahs.isNotEmpty()) {
-                        val firstAyahNumber = ayahs[0].SuraID?.toString() ?: Constants.ZERO_STRING
+                val modifiedAyahs = ayahs.toMutableList()
+                if (ayahs.isNotEmpty()) {
+                    val firstAyahNumber = ayahs[0].SuraID?.toString() ?: Constants.ZERO_STRING
 
-                        if (!(firstAyahNumber == Constants.FIRST_AYAH_NUMBER || firstAyahNumber == Constants.SURAH_TAWBAH_NUMBER)) {
-                            modifiedAyahs.add(0, Helper.createBismillahItem())
-                        }
-                    }
-                    ayahAdapter.differ.submitList(modifiedAyahs) {
-                        // ✅ Callback after list is submitted — now safe to scroll
-                        quranViewModel.scrollToAyah.value?.let { scrollToAyahPosition(it) }
+                    if (!(firstAyahNumber == Constants.FIRST_AYAH_NUMBER || firstAyahNumber == Constants.SURAH_TAWBAH_NUMBER)) {
+                        modifiedAyahs.add(0, Helper.createBismillahItem())
                     }
                 }
+                ayahAdapter.differ.submitList(modifiedAyahs) {
+                    // ✅ Callback after list is submitted — now safe to scroll
+                    quranViewModel.scrollToAyah.value?.let { scrollToAyahPosition(it) }
+                }
             }
+//            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+//
+//            }
         }
     }
 
